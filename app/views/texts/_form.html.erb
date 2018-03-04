@@ -1,0 +1,40 @@
+<%= form_with(model: text, local: true) do |form| %>
+  <% if text.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(text.errors.count, "error") %> prohibited this text from being saved:</h2>
+
+      <ul>
+      <% text.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <div class="field">
+      <label>Palavras</label>
+      <%= form.text_field :words, id: :text_words, class: "form-control" %>
+    </div>
+
+    <div class="field">
+      <label>Parágrafos</label>
+      <%= form.text_field :paragraphs, type: :number, id: :text_paragraphs, class: "form-control" %>
+    </div>
+
+    <div class="field">
+      <label>Idioma</label>
+      <%= form.select :language_iso, ["pt", "en"], {}, { id: :text_language_iso, class: "form-control" } %>
+    </div>
+
+    <div class="field">
+      <label>Qtde Mínima de Caracteres</label>
+      <%= form.text_field :char_quantity, type: :number, id: :text_char_quantity, class: "form-control" %>
+    </div>
+
+    <br>
+    <div class="actions text-center">
+      <%= form.submit class: "btn btn-primary" %>
+    </div>
+  </div>
+<% end %>

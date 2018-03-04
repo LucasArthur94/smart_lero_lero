@@ -1,0 +1,38 @@
+<div class="col-md-12">
+  <p id="notice"><%= notice %></p>
+
+  <h1 class="text-center">Lista de Textos Gerados</h1>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Palavras</th>
+        <th>Parágrafos</th>
+        <th>Idioma</th>
+        <th>Qtde Mínima de Caracteres</th>
+        <th colspan="3"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @texts.each do |text| %>
+        <tr>
+          <td><%= text.words %></td>
+          <td><%= text.paragraphs %></td>
+          <td><%= text.language_iso %></td>
+          <td><%= text.char_quantity %></td>
+          <td>
+            <%= link_to 'Ver', text %> |
+            <%= link_to 'Editar', edit_text_path(text) %> |
+            <%= link_to 'Destruir', text, method: :delete, data: { confirm: 'Certeza?' } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <br>
+  <div class="text-center">
+    <%= button_to 'Gerar Novo Lero-Lero', new_text_path, { method: :get, class: "btn btn-primary" } %>
+  </div>
+</div>

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :texts
   get 'text/new'
 
   get 'text/show'

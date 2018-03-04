@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>SmartLeroLero</title>
+    <title>Smart Lero-Lero</title>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
@@ -9,6 +9,12 @@
   </head>
 
   <body>
-    <%= yield %>
+    <div id='title' class='container-fluid text-center'>
+      <h1>Gerador de Lero-Lero Inteligente</h1>
+      <cite>Um gerador de lero-lero inteligente? Isso é SMART!</cite>
+    </div>
+    <div class='container-fluid'>
+      <%= yield %>
+    </div>
   </body>
 </html>

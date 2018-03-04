@@ -1,0 +1,12 @@
+<div class="col-md-12">
+  <br>
+  <h1 class="text-center">Editar Lero-Lero</h1>
+
+  <%= render 'form', text: @text %>
+
+  <div class="text-center">
+    <%= button_to 'Ver', @text, { method: :get, class: "btn btn-primary" } %>
+    <br>
+    <%= button_to 'Voltar', texts_path, { method: :get, class: "btn btn-primary" } %>
+  </div>
+</div>

@@ -1,0 +1,34 @@
+<div class="col-md-12">
+  <p id="notice"><%= notice %></p>
+
+  <p>
+    <strong>Palavras:</strong>
+    <%= @text.words %>
+  </p>
+
+  <p>
+    <strong>Parágrafos:</strong>
+    <%= @text.paragraphs %>
+  </p>
+
+  <p>
+    <strong>Idioma:</strong>
+    <%= @text.language_iso %>
+  </p>
+
+  <p>
+    <strong>Qtde Mínima de Caracteres:</strong>
+    <%= @text.char_quantity %>
+  </p>
+
+  <p>
+    <strong>Texto gerado</strong>
+    <%= @text.generated_text %>
+  </p>
+
+  <div class="text-center">
+    <%= button_to 'Editar', edit_text_path(@text), { method: :get, class: "btn btn-primary" } %>
+    <br>
+    <%= button_to 'Voltar', texts_path, { method: :get, class: "btn btn-primary" } %>
+  </div>
+</div>

@@ -1,3 +1,5 @@
+require 'nokogiri'
+require 'open-uri'
 require 'whatlanguage/string'
 
 class ApplicationController < ActionController::Base
