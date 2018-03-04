@@ -3,9 +3,7 @@ class TextWorker
 
   def perform(text_id)
     @text = Text.find(text_id)
-    p @text
     @text.generated_text = generate_text(@text.words, @text.paragraphs, @text.char_quantity, @text.language_iso.to_sym)
-    p @text.generated_text
     @text.save
   end
 
