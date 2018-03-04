@@ -12,33 +12,41 @@ class TextWorker
   def generate_text(words, paragraphs, char_quantity, language_iso)
     relevant_paragraphs = find_relevant_paragraphs(words, paragraphs, 0, 1, char_quantity, language_iso)
 
-    relevant_paragraphs.each_with_index.map do |reference, index|
-      if index == 0
-        reference.first
-      elsif index == relevant_paragraphs.length - 1
-        reference.last
-      else
-        reference.sample
-      end
-    end.join("\n")
+    if relevant_paragraphs.present?
+      relevant_paragraphs.each_with_index.map do |reference, index|
+        if index == 0
+          reference.first
+        elsif index == relevant_paragraphs.length - 1
+          reference.last
+        else
+          reference.sample
+        end
+      end.join("\n")
+    else
+      ""
+    end
   end
 
 
   def find_relevant_paragraphs(words, paragraphs, previous_results, current_page, char_quantity, language_iso)
     query = words.split.join("+")
 
-    hash = { q: query, filetype: "html", start: ((current_page * 10) - 10) }
+    hash = {
+      key: "AIzaSyCRNOK2iX-fVrhZYRgL-q-g9DeQn4wlKaI",
+      cx: "006486813528355849225:y_ixysq2dsm",
+      q: query,
+      filetype: "html",
+      start: ((current_page * 10) - 9)
+    }
 
     query_string = hash.to_query
 
-    url_search = "https://www.google.com.br/search?#{query_string}"
+    url_search = "https://www.googleapis.com/customsearch/v1?#{query_string}"
 
-    search = Nokogiri::HTML(open(url_search))
+    search = JSON.parse(HTTParty.get(url_search, format: :plain), symbolize_names: true)
 
-    results = search.xpath('//h3/a').map do |node|
-      pre_url = node['href']
-      pre_url.slice! "/url?q="
-      pre_url.split('&sa')[0]
+    results = search[:items].map do |item|
+      item[:link]
     end
 
     selected_paragraphs = results.map do |result|
@@ -62,6 +70,8 @@ class TextWorker
         # p "RuntimeError"
       rescue OpenSSL::SSL::SSLError
         # p "OpenSSL::SSL::SSLError"
+      rescue SocketError
+        # p "SocketError"
       end
     end.compact.reject { |c| c.empty? }
 
