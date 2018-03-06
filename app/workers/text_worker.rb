@@ -3,14 +3,9 @@ class TextWorker
 
   def perform(text_id)
     @text = Text.find(text_id)
-    begin
-      @text.generated_text = generate_text(@text.words, @text.paragraphs, @text.char_quantity, @text.language_iso.to_sym)
-      @text.status = "done"
-      @text.save
-    rescue OpenURI::HTTPError
-      @text.status = "error"
-      @text.save
-    end
+    @text.status = "error"
+    @text.generated_text = generate_text(@text.words, @text.paragraphs, @text.char_quantity, @text.language_iso.to_sym)
+    @text.save
   end
 
   private
@@ -19,6 +14,7 @@ class TextWorker
     relevant_paragraphs = find_relevant_paragraphs(words, paragraphs, 0, 1, char_quantity, language_iso)
 
     if relevant_paragraphs.present?
+      @text.status = "done"
       relevant_paragraphs.each_with_index.map do |reference, index|
         if index == 0
           reference.first
