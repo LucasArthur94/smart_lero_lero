@@ -26,6 +26,8 @@ class TextsController < ApplicationController
   def create
     @text = Text.new(text_params)
 
+    @text.status = "construction"
+
     respond_to do |format|
       if @text.save
         TextWorker.perform_async(@text.id)

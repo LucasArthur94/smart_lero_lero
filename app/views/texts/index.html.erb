@@ -10,6 +10,7 @@
         <th>Parágrafos</th>
         <th>Idioma</th>
         <th>Qtde Mínima de Caracteres</th>
+        <th>Status</th>
         <th colspan="3"></th>
       </tr>
     </thead>
@@ -21,6 +22,7 @@
           <td><%= text.paragraphs %></td>
           <td><%= text.language_iso %></td>
           <td><%= text.char_quantity %></td>
+          <td><%= text.status %></td>
           <td>
             <%= link_to 'Ver', text %> |
             <%= link_to 'Editar', edit_text_path(text) %> |

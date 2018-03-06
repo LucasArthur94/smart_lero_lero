@@ -3,8 +3,14 @@ class TextWorker
 
   def perform(text_id)
     @text = Text.find(text_id)
-    @text.generated_text = generate_text(@text.words, @text.paragraphs, @text.char_quantity, @text.language_iso.to_sym)
-    @text.save
+    begin
+      @text.generated_text = generate_text(@text.words, @text.paragraphs, @text.char_quantity, @text.language_iso.to_sym)
+      @text.status = "done"
+      @text.save
+    rescue OpenURI::HTTPError
+      @text.status = "error"
+      @text.save
+    end
   end
 
   private
