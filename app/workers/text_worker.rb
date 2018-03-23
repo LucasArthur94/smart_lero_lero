@@ -3,7 +3,6 @@ class TextWorker
 
   def perform(text_id)
     @text = Text.find(text_id)
-    @text.status = "error"
     @text.generated_text = generate_text(@text.words, @text.paragraphs, @text.char_quantity, @text.language_iso.to_sym)
     @text.save
   end
@@ -47,8 +46,13 @@ class TextWorker
 
     search = JSON.parse(HTTParty.get(url_search, format: :plain), symbolize_names: true)
 
-    results = search[:items].map do |item|
-      item[:link]
+    begin
+      results = search[:items].map do |item|
+        item[:link]
+      end
+    rescue NoMethodError
+      @text.status = "error"
+      return nil
     end
 
     selected_paragraphs = results.map do |result|
@@ -64,6 +68,8 @@ class TextWorker
         end.compact.reject { |c| c.empty? }
       rescue Errno::ENOENT
         # p "Errno::ENOENT"
+      rescue Errno::ECONNREFUSED
+        # p "Errno::ECONNREFUSED"
       rescue OpenURI::HTTPError
         # p "OpenURI::HTTPError"
       rescue URI::InvalidURIError
