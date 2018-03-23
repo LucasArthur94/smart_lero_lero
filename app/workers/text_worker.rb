@@ -52,7 +52,7 @@ class TextWorker
       end
     rescue NoMethodError
       @text.update(status: "error")
-      []
+      results = []
     end
 
     selected_paragraphs = results.map do |result|
