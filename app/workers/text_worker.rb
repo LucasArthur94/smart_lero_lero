@@ -48,7 +48,7 @@ class TextWorker
 
     if search[:items].blank?
       @text.update(status: "error")
-      return
+      return []
     else
       results = search[:items].map do |item|
         item[:link]
