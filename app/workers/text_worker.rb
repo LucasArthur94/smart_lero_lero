@@ -46,15 +46,15 @@ class TextWorker
 
     search = JSON.parse(HTTParty.get(url_search, format: :plain), symbolize_names: true)
 
-    begin
+    if search[:items].blank?
+      results = []
+      @text.update(status: "error")
+    else
       results = search[:items].map do |item|
         item[:link]
       end
-    rescue NoMethodError
-      @text.update(status: "error")
-      results = []
     end
-
+  
     selected_paragraphs = results.map do |result|
       begin
         Nokogiri::HTML(open(result)).css('p').map do |p_tag|
