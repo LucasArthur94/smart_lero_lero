@@ -13,7 +13,7 @@ class TextWorker
     relevant_paragraphs = find_relevant_paragraphs(words, paragraphs, 0, 1, char_quantity, language_iso)
 
     if relevant_paragraphs.present?
-      @text.status = "done"
+      @text.update(status: "done")
       relevant_paragraphs.each_with_index.map do |reference, index|
         if index == 0
           reference.first
@@ -50,43 +50,43 @@ class TextWorker
       results = search[:items].map do |item|
         item[:link]
       end
-
-      selected_paragraphs = results.map do |result|
-        begin
-          Nokogiri::HTML(open(result)).css('p').map do |p_tag|
-            paragraph = p_tag.content.strip
-            if paragraph.language_iso == language_iso && paragraph.length > char_quantity
-              relevant = words.split.map do |word|
-                paragraph.downcase.include? " #{word} "
-              end
-              paragraph if relevant.any?
-            end
-          end.compact.reject { |c| c.empty? }
-        rescue Errno::ENOENT
-          # p "Errno::ENOENT"
-        rescue Errno::ECONNREFUSED
-          # p "Errno::ECONNREFUSED"
-        rescue OpenURI::HTTPError
-          # p "OpenURI::HTTPError"
-        rescue URI::InvalidURIError
-          # p "URI::InvalidURIError"
-        rescue RuntimeError
-          # p "RuntimeError"
-        rescue OpenSSL::SSL::SSLError
-          # p "OpenSSL::SSL::SSLError"
-        rescue SocketError
-          # p "SocketError"
-        end
-      end.compact.reject { |c| c.empty? }
-
-      if previous_results + selected_paragraphs.length < paragraphs
-        selected_paragraphs + find_relevant_paragraphs(words, paragraphs, selected_paragraphs.length + previous_results, current_page + 1, char_quantity, language_iso) 
-      else
-        selected_paragraphs
-      end
     rescue NoMethodError
-      @text.status = "error"
+      @text.update(status: "error")
       []
+    end
+
+    selected_paragraphs = results.map do |result|
+      begin
+        Nokogiri::HTML(open(result)).css('p').map do |p_tag|
+          paragraph = p_tag.content.strip
+          if paragraph.language_iso == language_iso && paragraph.length > char_quantity
+            relevant = words.split.map do |word|
+              paragraph.downcase.include? " #{word} "
+            end
+            paragraph if relevant.any?
+          end
+        end.compact.reject { |c| c.empty? }
+      rescue Errno::ENOENT
+        # p "Errno::ENOENT"
+      rescue Errno::ECONNREFUSED
+        # p "Errno::ECONNREFUSED"
+      rescue OpenURI::HTTPError
+        # p "OpenURI::HTTPError"
+      rescue URI::InvalidURIError
+        # p "URI::InvalidURIError"
+      rescue RuntimeError
+        # p "RuntimeError"
+      rescue OpenSSL::SSL::SSLError
+        # p "OpenSSL::SSL::SSLError"
+      rescue SocketError
+        # p "SocketError"
+      end
+    end.compact.reject { |c| c.empty? }
+
+    if previous_results + selected_paragraphs.length < paragraphs
+      selected_paragraphs + find_relevant_paragraphs(words, paragraphs, selected_paragraphs.length + previous_results, current_page + 1, char_quantity, language_iso) 
+    else
+      selected_paragraphs
     end
   end
 end
