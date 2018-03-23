@@ -47,8 +47,8 @@ class TextWorker
     search = JSON.parse(HTTParty.get(url_search, format: :plain), symbolize_names: true)
 
     if search[:items].blank?
-      results = []
       @text.update(status: "error")
+      return
     else
       results = search[:items].map do |item|
         item[:link]
