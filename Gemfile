@@ -39,7 +39,7 @@ gem 'whatlanguage'
 gem 'jquery-rails'
 
 # Use Bootstrap
-gem 'bootstrap', '~> 4.0.0'
+gem 'bootstrap', '~> 4.1.2'
 
 # Use Material Design
 gem 'material-sass', '~> 4.0.0'
@@ -53,6 +53,7 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.13'
+  gem 'dotenv-rails'
   gem 'selenium-webdriver'
 end
 

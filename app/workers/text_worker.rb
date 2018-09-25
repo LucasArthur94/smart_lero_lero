@@ -33,8 +33,8 @@ class TextWorker
     query = words.split.join("+")
 
     hash = {
-      key: "AIzaSyCRNOK2iX-fVrhZYRgL-q-g9DeQn4wlKaI",
-      cx: "006486813528355849225:y_ixysq2dsm",
+      key: ENV['GOOGLE_KEY'],
+      cx: ENV['GOOGLE_APP'],
       q: query,
       filetype: "html",
       start: ((current_page * 10) - 9)
@@ -54,7 +54,7 @@ class TextWorker
         item[:link]
       end
     end
-  
+
     selected_paragraphs = results.map do |result|
       begin
         Nokogiri::HTML(open(result)).css('p').map do |p_tag|
@@ -84,7 +84,7 @@ class TextWorker
     end.compact.reject { |c| c.empty? }
 
     if previous_results + selected_paragraphs.length < paragraphs
-      selected_paragraphs + find_relevant_paragraphs(words, paragraphs, selected_paragraphs.length + previous_results, current_page + 1, char_quantity, language_iso) 
+      selected_paragraphs + find_relevant_paragraphs(words, paragraphs, selected_paragraphs.length + previous_results, current_page + 1, char_quantity, language_iso)
     else
       selected_paragraphs
     end
