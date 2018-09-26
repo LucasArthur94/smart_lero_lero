@@ -1,3 +1,7 @@
+require 'open-uri'
+require 'whatlanguage'
+require 'whatlanguage/string'
+
 class TextWorker
   include Sidekiq::Worker
 
@@ -47,7 +51,6 @@ class TextWorker
     search = JSON.parse(HTTParty.get(url_search, format: :plain), symbolize_names: true)
 
     if search[:items].blank?
-      @text.update(status: "error")
       return []
     else
       results = search[:items].map do |item|

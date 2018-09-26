@@ -33,7 +33,7 @@ gem 'redis', '~> 4.0'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-gem 'whatlanguage'
+gem 'whatlanguage', github: 'peterc/whatlanguage'
 
 # Use JQuery
 gem 'jquery-rails'
