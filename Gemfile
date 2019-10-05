@@ -39,7 +39,7 @@ gem 'whatlanguage', github: 'peterc/whatlanguage'
 gem 'jquery-rails'
 
 # Use Bootstrap
-gem 'bootstrap', '~> 4.1.2'
+gem 'bootstrap', '~> 4.3.1'
 
 # Use Material Design
 gem 'material-sass', '~> 4.0.0'
